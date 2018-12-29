@@ -6,11 +6,31 @@ class Tooltip extends HTMLElement {
         this.attachShadow({ mode: 'open' })
         this.shadowRoot.innerHTML = /*html*/`
         <style>
+            :host {
+               background: green;
+            }
+
+            :host(.important) {
+               background: var(--color-primary, #ccc);
+            }
+
+            :host-context(p) {
+               background: blue;
+            }
+
             div {
                 background-color: black;
                 color: white;
                 position: absolute;
                 z-index: 10;
+                padding: 0.15rem;
+                border-radius: 3px;
+                box-shadow: 1px 1px 6px rgba(0,0,0,0.26);
+
+            }
+
+            ::slotted(.highlight) {
+                border-bottom: 1px dotted black;
             }
         </style>
         <slot>Default slot text</slot>

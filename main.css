@@ -1,7 +1,11 @@
+html {
+    --color-primary: lightblue;
+}
+
 div {
     border: 1px solid green;
 }
 
-.highlight {
+/*  .highlight {
     background-color: aquamarine;
-}
+}  */
