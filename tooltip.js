@@ -10,7 +10,7 @@ class Tooltip extends HTMLElement {
         this.shadowRoot.innerHTML = /*html*/ `
         <style>
             :host {
-               background: green;
+               position: relative;
             }
 
             :host(.important) {
