@@ -2,9 +2,12 @@ class Tooltip extends HTMLElement {
     constructor() {
         super()
         this._tooltipContainer
+        this._tooltipIcon
         this._toolTipText = 'Default tooltip text.'
-        this.attachShadow({ mode: 'open' })
-        this.shadowRoot.innerHTML = /*html*/`
+        this.attachShadow({
+            mode: 'open'
+        })
+        this.shadowRoot.innerHTML = /*html*/ `
         <style>
             :host {
                background: green;
@@ -38,15 +41,33 @@ class Tooltip extends HTMLElement {
         `
     }
 
+    static get observedAttributes() {
+        return ['text']
+    }
+
+    attributeChangedCallback(name, oldValue, newValue) {
+        if (name === 'text') {
+            this._toolTipText = newValue
+        }
+    }
+
     connectedCallback() {
-        if(this.hasAttribute('text')) {
+        if (this.hasAttribute('text')) {
             this._toolTipText = this.getAttribute('text')
         }
-        const tooltipIcon = this.shadowRoot.querySelector('span')
-        tooltipIcon.textContent = ' (?)'
-        tooltipIcon.addEventListener('mouseenter', this._showTooltip.bind(this))
+        this._tooltipIcon = this.shadowRoot.querySelector('span')
+        this._tooltipIcon.textContent = ' (?)'
+        this._tooltipIcon.addEventListener('mouseenter', this._showTooltip.bind(this))
         tooltipIcon.addEventListener('mouseleave', this._hideTooltip.bind(this))
-        this.shadowRoot.appendChild(tooltipIcon)
+    }
+
+    disconnectedCallback() {
+        this._tooltipIcon.removeEventListener('mouseenter', this._showTooltip)
+        this._tooltipIcon.removeEventListener('mouseleave', this._hideTooltip)
+    }
+
+    _render() {
+
     }
 
     _showTooltip() {
